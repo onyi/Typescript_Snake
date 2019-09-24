@@ -4,12 +4,16 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "open index.html && webpack --watch"
+    "start": "xdg-open index.html && webpack --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "css-loader": "^3.2.0",
+    "sass-loader": "^8.0.0",
+    "sass-node": "^4.11.2",
+    "style-loader": "^1.0.0",
     "ts-loader": "^6.0.4",
     "typescript": "^3.6.2",
     "webpack": "^4.39.3",
