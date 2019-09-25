@@ -7,10 +7,10 @@ export class Grid {
     private offsetY: number = 0;
     private width: number = 50;
     private offsetWidth: number = 45;
-    public gridWidth = 700;
-    public gridHeight = 700;
-    public gridOffsetWidth = 700;
-    public gridOffsetHeight = 700;
+    public gridWidth = 600;
+    public gridHeight = 600;
+    public gridOffsetWidth = 600;
+    public gridOffsetHeight = 600;
     private matrix: Array<SnakeBody> = [];
     
     constructor(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number){
@@ -26,7 +26,6 @@ export class Grid {
     }
 
     draw(){
-
         for(let i = 0; i < this.gridWidth / this.width ; i++){
             for(let j = 0; j < this.gridHeight / this.width; j++){
                 this.ctx.fillStyle = 'orange';
