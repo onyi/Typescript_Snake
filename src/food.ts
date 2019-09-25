@@ -9,11 +9,14 @@ export class Food {
 
     private width: number = 45;
     private offsetWidth: number = 50;
+    private image: HTMLImageElement;
 
     constructor(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number){
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.ctx = ctx;
+        this.image = new Image();
+        this.image.src = "src/images/apple.png";
     }
 
     getX(){
@@ -50,6 +53,7 @@ export class Food {
     draw(){
         this.ctx.fillStyle = 'green';
         this.ctx.fillRect(this.getX(), this.getY(), this.width, this.width);
+        this.ctx.drawImage(this.image, this.getX(), this.getY(), this.width, this.width);
 
     }
 
