@@ -1,4 +1,5 @@
 import {State} from './state';
+import { StatusText } from './statusText';
 
 export class GameStatus {
 
@@ -12,6 +13,7 @@ export class GameStatus {
     private offsetY: number = 0;
 
     private gameButton: HTMLElement;
+    private scoreboard: HTMLElement;
 
     constructor(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number){
         this.ctx = ctx;
@@ -20,18 +22,30 @@ export class GameStatus {
         this.gameState = State.READY;
         this.gameButton = document.getElementById("gameButton");
         this.updateGameButton(this.gameState);
+        let scoreboard = document.createElement("div");
+        scoreboard.setAttribute("id", "scoreboard");
+        let gameComponents = document.getElementById("gameComponents");
+        gameComponents.appendChild(scoreboard);
+        // gameComponents.insertBefore(scoreboard, gameComponents.childNodes[0]);
+        this.scoreboard = scoreboard;
+
     }
 
     reset(){
         this.points = 0;
+        this.scoreboard.innerHTML = ``;
     }
 
     update(){
+
+        this.scoreboard.innerHTML = `Points: ${this.points}`;
+        this.scoreboard.appendChild(document.createElement("p"));
 
     }
 
     addPoint(){
         this.points ++;
+        this.update();
     }
 
     gameOver(){
@@ -66,7 +80,7 @@ export class GameStatus {
         }
         else if( this.gameState  === State.PLAYING ){
             this.gameState = State.GAMEOVER;
-            this.updateGameButton("Restart");
+            this.updateGameButton(StatusText.RESTART);
 
         }
         else if( this.gameState === State.GAMEOVER){
@@ -77,9 +91,9 @@ export class GameStatus {
     }
 
     draw(){
-        this.ctx.font = "12px Arial";
-        this.ctx.fillText(this.gameState, this.offsetX, this.offsetY);
-        this.ctx.fillText(`Points: ${this.points}`, this.offsetX, this.offsetY + 50);
+        // this.ctx.font = "12px Arial";
+        // this.ctx.fillText(this.gameState, this.offsetX, this.offsetY);
+        // this.ctx.fillText(`Points: ${this.points}`, this.offsetX, this.offsetY + 50);
     }   
 
     isPlaying(){
