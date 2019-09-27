@@ -14,6 +14,8 @@ export class GameStatus {
 
     private gameButton: HTMLElement;
     private scoreboard: HTMLElement;
+    private scoreboardText: HTMLElement;
+    private gameOverText: HTMLElement;
 
     constructor(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number){
         this.ctx = ctx;
@@ -24,6 +26,14 @@ export class GameStatus {
         this.updateGameButton(this.gameState);
         let scoreboard = document.createElement("div");
         scoreboard.setAttribute("id", "scoreboard");
+        let scoreboardText = document.createElement("p");
+        scoreboardText.setAttribute("id", "scoreboardText");
+        this.scoreboardText = scoreboardText;
+        scoreboard.appendChild(scoreboardText);
+        let gameOverText = document.createElement("p");
+        gameOverText.innerHTML = ``;
+        this.gameOverText = gameOverText;
+        scoreboard.appendChild(gameOverText);
         let gameComponents = document.getElementById("gameComponents");
         gameComponents.appendChild(scoreboard);
         // gameComponents.insertBefore(scoreboard, gameComponents.childNodes[0]);
@@ -33,14 +43,17 @@ export class GameStatus {
 
     reset(){
         this.points = 0;
-        this.scoreboard.innerHTML = ``;
+        this.scoreboard
+        this.scoreboardText.innerHTML = ``;
+        this.gameOverText.innerHTML = ``;
+        this.updateGameButton(State.START);
+        this.gameButton.removeAttribute("disabled");
+        // this.gameOver();
     }
 
     update(){
-
-        this.scoreboard.innerHTML = `Points: ${this.points}`;
-        this.scoreboard.appendChild(document.createElement("p"));
-
+        this.scoreboardText.innerHTML = `Points: ${this.points}`
+        // this.scoreboard.innerHTML = `Points: ${this.points}`;
     }
 
     addPoint(){
@@ -50,8 +63,9 @@ export class GameStatus {
 
     gameOver(){
         this.gameState = State.GAMEOVER;
-        this.updateGameButton(State.START);
+        this.updateGameButton(StatusText.RESTART);
         this.gameButton.removeAttribute("disabled");
+        this.gameOverText.innerHTML = StatusText.GAMEOVER;
     }
 
     start(){

@@ -2,6 +2,7 @@ import { Grid } from "./grid";
 import { Snake } from "./snake";
 import { Food } from "./food";
 import { GameStatus } from "./gameStatus";
+import { State } from "./state";
 
 export class Game {
   public canvas: HTMLCanvasElement;
@@ -42,7 +43,8 @@ export class Game {
     this.gameStatus.reset();
     this.gameStatus.ready();
     this.loopCount = 0;
-    this.endLoop();
+    // this.endLoop();
+    // this.startLoop();
   }
 
   private loop() {
@@ -81,7 +83,6 @@ export class Game {
   }
 
   startLoop() {
-    
     this.requestedFrameId = requestAnimationFrame(() => this.loop());
   }
 
@@ -90,12 +91,17 @@ export class Game {
   }
 
   startGame(){
+    if(!this.gameStatus.isPlaying()){
+      this.reset();
+    }
     this.gameStatus.start();
+    this.endLoop();
     this.startLoop();
   }
 
   gameOver(){
     this.gameStatus.gameOver();
+    // this.reset();
   }
 
   updateGameState(){
