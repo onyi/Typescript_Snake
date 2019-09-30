@@ -9,34 +9,45 @@ export class Snake {
     private y: number = 0;
     private offsetX: number = 0;
     private offsetY: number = 0;
-    private width: number = 45;
-    private offsetWidth: number = 50;
+    private width: number;
+    private offsetWidth: number;
     private increased: number = 0;
     private direction: Direction;
     private shapes: Array<SnakeBody> = [];
     private head: SnakeBody;
+    private headImage: HTMLImageElement;
+    private initSnakeSize: number;
 
 
-    constructor(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number){
+    constructor(ctx: CanvasRenderingContext2D, initSnakeSize: number, offsetX: number, offsetY: number, width: number, offsetWidth: number){
         this.ctx = ctx;
+        this.headImage = new Image();
+        this.headImage.src = "src/images/snakeHead.png";
+        this.initSnakeSize = initSnakeSize;
+        this.width = width;
+        this.offsetWidth = offsetWidth;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.direction = Direction.Up;
-        for(let i = 0; i < 7; i++){
+        for(let i = 0; i < this.initSnakeSize; i++){
             // start from 6 dots to the right, and 4 dots under from top left of the grid
             this.shapes.push(
-                new SnakeBody(offsetX + this.offsetWidth * 6, 
-                    (offsetY + this.offsetWidth * 4) + this.offsetWidth * i, 
-                    this.width, 
+                new SnakeBody(offsetX + this.width * 6, 
+                    (offsetY + this.width * 4) + this.width * i, 
+                    this.offsetWidth, 
                     Direction.Up));
         }
         this.head = this.shapes[0];
+        this.head.setIsHead();
     }
 
     draw(){
         for( const sb of this.shapes){
             this.ctx.fillStyle = 'black';
-            this.ctx.fillRect(sb.getX(), sb.getY(), this.width, this.width);
+            this.ctx.fillRect(sb.getX(), sb.getY(), this.offsetWidth, this.offsetWidth);
+            if(sb.getX() === this.head.getX() && sb.getY() === this.head.getY()){
+                this.ctx.drawImage(this.headImage, sb.getX(), sb.getY(), this.offsetWidth, this.offsetWidth);
+            }
         }
     }
 
@@ -78,19 +89,20 @@ export class Snake {
         let newX, newY;
         if(this.direction === Direction.Up){
             newX = this.head.getX();
-            newY = this.head.getY() - this.offsetWidth;
+            newY = this.head.getY() - this.width;
         }else if(this.direction === Direction.Down){
             newX = this.head.getX();
-            newY = this.head.getY() + this.offsetWidth;
+            newY = this.head.getY() + this.width;
         }else if(this.direction === Direction.Left){
-            newX = this.head.getX() - this.offsetWidth;
+            newX = this.head.getX() - this.width;
             newY = this.head.getY();
         }else if(this.direction === Direction.Right){
-            newX = this.head.getX() + this.offsetWidth;
+            newX = this.head.getX() + this.width;
             newY = this.head.getY();
         }
-        this.shapes.unshift(new SnakeBody(newX, newY, this.width, this.direction));
-        this.head = this.shapes[0];
+        let head = new SnakeBody(newX, newY, this.width, this.direction);
+        this.head = head;
+        this.shapes.unshift(head);
 
     }
 

@@ -9,18 +9,13 @@ export class GameStatus {
 
     private gameState: State;
 
-    private offsetX: number = 0; 
-    private offsetY: number = 0;
-
     private gameButton: HTMLElement;
     private scoreboard: HTMLElement;
     private scoreboardText: HTMLElement;
     private gameOverText: HTMLElement;
 
-    constructor(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number){
+    constructor(ctx: CanvasRenderingContext2D){
         this.ctx = ctx;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
         this.gameState = State.READY;
         this.gameButton = document.getElementById("gameButton");
         this.updateGameButton(this.gameState);

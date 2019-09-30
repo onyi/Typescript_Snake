@@ -7,6 +7,7 @@ export class SnakeBody {
     private width: number = 0;
     private direction: Direction;
     private isEnded: boolean = false;
+    private isHead: boolean = false;
 
     constructor(x: number, y: number, width: number, direction: Direction){
         this.x = x;
@@ -25,6 +26,14 @@ export class SnakeBody {
     
     getDirection(){
         return this.direction;
+    }
+
+    setIsHead(){
+        this.isHead = true;
+    }
+
+    checkIsHead(){
+        return this.isHead;
     }
 
     update(){

@@ -4,17 +4,23 @@ import { Food } from "./food";
 import { GameStatus } from "./gameStatus";
 import { State } from "./state";
 
+import { Config } from "./config";
+
 export class Game {
   public canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private requestedFrameId: number = -1;
   private grid: Grid;
-  private offsetX: number = 100;
-  private offsetY: number = 100;
+  private offsetX: number = Config.CANVAS_OFFSET_X;
+  private offsetY: number = Config.CANVAS_OFFSET_Y;
+  private gridWidth: number = Config.CANVAS_WIDTH;
+  private gridHeight: number = Config.CANVAS_HEIGHT;
+  private width: number = Config.WIDTH;
+  private offsetWidth: number = Math.floor( this.width * 0.9 ) ;
   private snake: Snake;
   private frame: number = 0;
   // private gameOver: boolean = false;
-  private tickRate: number = 15;
+  private tickRate: number = Config.TICKRATE;
   private food: Food;
   private gameStatus: GameStatus;
 
@@ -24,20 +30,21 @@ export class Game {
     this.canvas = canvas;
     // canvas.setAttribute("width", this. )
     this.ctx = canvas.getContext("2d");
-    this.grid = new Grid(this.ctx, this.offsetX, this.offsetY);
-    this.snake = new Snake(this.ctx, this.offsetX, this.offsetY);
+    this.grid = new Grid(this.ctx, this.gridWidth, this.gridHeight, this.offsetX, this.offsetY, this.width, this.offsetWidth);
+    this.snake = new Snake(this.ctx, Config.INIT_SNAKE_SIZE, this.offsetX, this.offsetY, this.width, this.offsetWidth);
     canvas.setAttribute("width", this.grid.gridOffsetWidth.toString());
     canvas.setAttribute("height", this.grid.gridOffsetHeight.toString());
-    this.food = new Food(this.ctx, this.offsetX, this.offsetY);
+    this.food = new Food(this.ctx, this.offsetX, this.offsetY, this.width, this.offsetWidth);
     this.food.update(this.grid.gridWidth, this.grid.gridHeight);
-    this.gameStatus = new GameStatus(this.ctx, this.offsetX - 50,  this.offsetY - 50 );
+    this.gameStatus = new GameStatus(this.ctx);
+    console.log(`offsetWidth: ${this.offsetWidth}`);
   }
 
   reset(){
     this.clearCanvas();
-    this.grid = new Grid(this.ctx, this.offsetX, this.offsetY);
-    this.snake = new Snake(this.ctx, this.offsetX, this.offsetY);
-    this.food = new Food(this.ctx, this.offsetX, this.offsetY);
+    this.grid = new Grid(this.ctx, this.gridWidth, this.gridHeight, this.offsetX, this.offsetY, this.width, this.offsetWidth);
+    this.snake = new Snake(this.ctx, Config.INIT_SNAKE_SIZE, this.offsetX, this.offsetY, this.width, this.offsetWidth);
+    this.food = new Food(this.ctx, this.offsetX, this.offsetY, this.width, this.offsetWidth);
     this.updateFoodPosition();
     // this.gameOver = false;
     this.gameStatus.reset();
